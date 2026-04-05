@@ -1,0 +1,57 @@
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #fff9f5 0%, #fff3e0 100%);
+  color: #333;
+  min-height: 100vh;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF3E0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FF9800;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #F57C00;
+}
+
+a {
+  font-weight: 500;
+  color: #FF9800;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #F57C00;
+}
+
+@media (prefers-color-scheme: light) {
+  a:visited {
+    color: #FF9800;
+  }
+}

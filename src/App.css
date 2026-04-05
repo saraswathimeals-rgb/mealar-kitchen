@@ -1,0 +1,812 @@
+/* Color Scheme: Light Orange (#FF9800) and White */
+:root {
+  --primary-orange: #FF9800;
+  --light-orange: #FFE0B2;
+  --lighter-orange: #FFF3E0;
+  --white: #FFFFFF;
+  --dark-gray: #333;
+  --light-gray: #F5F5F5;
+  --border-color: #FFD699;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+/* Login Styles */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #fff9f5 0%, #fff3e0 100%);
+}
+
+.login-container h2 {
+  color: var(--primary-orange);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(255, 152, 0, 0.15);
+}
+
+.login-container div {
+  margin-bottom: 1.5rem;
+}
+
+.login-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--dark-gray);
+  font-weight: 500;
+}
+
+.login-container input {
+  padding: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid var(--lighter-orange);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.login-container input:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.login-container button {
+  padding: 0.75rem;
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-container button:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.error {
+  color: #D32F2F;
+  font-size: 0.9rem;
+  margin-top: -1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Dashboard Styles */
+.dashboard {
+  text-align: left;
+}
+
+.dashboard h1 {
+  color: var(--primary-orange);
+  margin-bottom: 1.5rem;
+}
+
+.sections {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.section {
+  background: var(--white);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.5rem;
+  flex: 1;
+  min-width: 250px;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(255, 152, 0, 0.2);
+}
+
+.section h2 {
+  color: var(--primary-orange);
+  margin-top: 0;
+}
+
+.section p {
+  color: #666;
+}
+
+.section button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.section button:hover {
+  background-color: #F57C00;
+}
+
+/* Employee Management Form */
+.employee-form {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.employee-form div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 150px;
+}
+
+.employee-form label {
+  color: var(--dark-gray);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.employee-form input,
+.employee-form select {
+  padding: 0.75rem;
+  border: 2px solid var(--lighter-orange);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.employee-form input:focus,
+.employee-form select:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.employee-form button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  height: fit-content;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: flex-end;
+}
+
+.employee-form button:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+}
+
+/* Tables */
+.employee-table,
+.salary-records {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.employee-table th,
+.salary-records th {
+  background-color: var(--primary-orange);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.employee-table td,
+.salary-records td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+  color: var(--dark-gray);
+}
+
+.employee-table tr:hover,
+.salary-records tr:hover {
+  background-color: var(--lighter-orange);
+}
+
+.employee-table button,
+.salary-records button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.employee-table button:hover,
+.salary-records button:hover {
+  background-color: #F57C00;
+}
+
+/* Employee Details */
+.employee-details {
+  background: var(--white);
+  margin-top: 2rem;
+  border-top: 3px solid var(--primary-orange);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.employee-details h3 {
+  color: var(--primary-orange);
+  margin-top: 0;
+}
+
+.salary-records ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  color: #666;
+}
+
+.salary-records li {
+  margin: 0.25rem 0;
+}
+
+/* Advance Form */
+.advance-form {
+  background: var(--lighter-orange);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  margin: 1.5rem 0;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.advance-form h4 {
+  width: 100%;
+  color: var(--primary-orange);
+  margin: 0 0 0.5rem 0;
+}
+
+.advance-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.advance-form label {
+  color: var(--dark-gray);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.advance-form input {
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.advance-form input:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.advance-form button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.advance-form button:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+}
+
+/* Back Button */
+button[type='button']:not(.employee-form button):not(.employee-table button):not(.salary-records button):not(.advance-form button) {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type='button']:not(.employee-form button):not(.employee-table button):not(.salary-records button):not(.advance-form button):hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+}
+
+/* General Button */
+button {
+  transition: all 0.3s ease;
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Inventory Management */
+.inventory-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-card.alert {
+  border-color: #D32F2F;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--primary-orange);
+}
+
+.stat-card.alert .stat-number {
+  color: #D32F2F;
+}
+
+.stat-label {
+  color: #666;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.inventory-form {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.inventory-form div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 120px;
+}
+
+.inventory-form label {
+  color: var(--dark-gray);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.inventory-form input,
+.inventory-form select {
+  padding: 0.75rem;
+  border: 2px solid var(--lighter-orange);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.inventory-form input:focus,
+.inventory-form select:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.inventory-form button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  height: fit-content;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: flex-end;
+}
+
+.inventory-form button:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+}
+
+.filter-section {
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filter-section label {
+  color: var(--dark-gray);
+  font-weight: 500;
+}
+
+.filter-section select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--dark-gray);
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.filter-section select:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.inventory-table th {
+  background-color: var(--primary-orange);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.inventory-table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+  color: var(--dark-gray);
+}
+
+.inventory-table tr:hover {
+  background-color: var(--lighter-orange);
+}
+
+.inventory-table button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.inventory-table button:hover {
+  background-color: #F57C00;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.status-badge.ok {
+  background-color: #C8E6C9;
+  color: #2E7D32;
+}
+
+.status-badge.low {
+  background-color: #FFCDD2;
+  color: #C62828;
+}
+
+.inventory-details {
+  background: var(--white);
+  margin-top: 2rem;
+  border-top: 3px solid var(--primary-orange);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.inventory-details h3 {
+  color: var(--primary-orange);
+  margin-top: 0;
+}
+
+.inventory-details h4 {
+  color: var(--primary-orange);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.details-info {
+  background: var(--lighter-orange);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.details-info div {
+  color: var(--dark-gray);
+}
+
+.details-info strong {
+  color: var(--primary-orange);
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.transaction-table th {
+  background-color: var(--light-orange);
+  color: var(--dark-gray);
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.transaction-table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  color: var(--dark-gray);
+}
+
+.transaction-table tr:hover {
+  background-color: var(--lighter-orange);
+}
+
+.type-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.type-badge.purchase {
+  background-color: #BBE2F0;
+  color: #01579B;
+}
+
+.type-badge.usage {
+  background-color: #F0D5BB;
+  color: #6F4400;
+}
+
+.transaction-form {
+  background: var(--lighter-orange);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.transaction-form h4 {
+  width: 100%;
+  color: var(--primary-orange);
+  margin: 0 0 0.5rem 0;
+}
+
+.transaction-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-form label {
+  color: var(--dark-gray);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.transaction-form input,
+.transaction-form select {
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.transaction-form input:focus,
+.transaction-form select:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.transaction-form button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.transaction-form button:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+}
+
+/* Expense Tracking Styles */
+.expense-form {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.expense-form div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 150px;
+}
+
+.expense-form label {
+  color: var(--dark-gray);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.expense-form input,
+.expense-form select {
+  padding: 0.75rem;
+  border: 2px solid var(--lighter-orange);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.expense-form input:focus,
+.expense-form select:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.expense-form button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  height: fit-content;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: flex-end;
+}
+
+.expense-form button:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+}
+
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.expense-table th {
+  background-color: var(--primary-orange);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.expense-table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+  color: var(--dark-gray);
+}
+
+.expense-table tr:hover {
+  background-color: var(--lighter-orange);
+}
+
+.expense-table button {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.expense-table button:hover {
+  background-color: #F57C00;
+}
