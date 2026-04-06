@@ -7,9 +7,16 @@ export interface AdvanceEntry {
   amount: number
 }
 
+export interface LeaveEntry {
+  date: string // YYYY-MM-DD
+  type: 'paid' | 'unpaid'
+  reason: string
+}
+
 export interface SalaryRecord {
   month: string // YYYY-MM
   advances: AdvanceEntry[]
+  leaves: LeaveEntry[]
   paid: boolean
 }
 
@@ -61,6 +68,12 @@ const EmployeeManagement: React.FC = () => {
   const [advanceMonth, setAdvanceMonth] = useState('')
   const [advanceDate, setAdvanceDate] = useState('')
   const [advanceAmount, setAdvanceAmount] = useState(0)
+  const [leaveMonth, setLeaveMonth] = useState('')
+  const [leaveDate, setLeaveDate] = useState('')
+  const [leaveType, setLeaveType] = useState<'paid' | 'unpaid'>('unpaid')
+  const [leaveReason, setLeaveReason] = useState('')
+  const [showAdvanceModal, setShowAdvanceModal] = useState(false)
+  const [showLeaveModal, setShowLeaveModal] = useState(false)
   const [form, setForm] = useState<Omit<Employee, 'id'>>({
     name: '',
     role: roles[0],
@@ -74,6 +87,9 @@ const EmployeeManagement: React.FC = () => {
       const now = new Date()
       const ym = now.toISOString().slice(0, 7)
       setAdvanceMonth(ym)
+      setLeaveMonth(ym)
+      setShowAdvanceModal(false)
+      setShowLeaveModal(false)
     }
   }, [selected])
 
@@ -166,7 +182,7 @@ const EmployeeManagement: React.FC = () => {
       if (idx >= 0) {
         updatedRecords[idx].advances.push({ date: advanceDate, amount: advanceAmount })
       } else {
-        updatedRecords.push({ month: advanceMonth, advances: [{ date: advanceDate, amount: advanceAmount }], paid: false })
+        updatedRecords.push({ month: advanceMonth, advances: [{ date: advanceDate, amount: advanceAmount }], leaves: [], paid: false })
       }
       await supabase
         .from('employees')
@@ -182,6 +198,36 @@ const EmployeeManagement: React.FC = () => {
     setAdvanceMonth('')
     setAdvanceDate('')
     setAdvanceAmount(0)
+    setShowAdvanceModal(false)
+  }
+
+  const handleAddLeave = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selected || !leaveMonth || !leaveDate) return
+    const newLeave: LeaveEntry = { date: leaveDate, type: leaveType, reason: leaveReason }
+    const updatedRecords = [...selected.salaryRecords]
+    const idx = updatedRecords.findIndex((r) => r.month === leaveMonth)
+    if (idx >= 0) {
+      updatedRecords[idx] = {
+        ...updatedRecords[idx],
+        leaves: [...(updatedRecords[idx].leaves || []), newLeave],
+      }
+    } else {
+      updatedRecords.push({ month: leaveMonth, advances: [], leaves: [newLeave], paid: false })
+    }
+    await supabase
+      .from('employees')
+      .update({ salary_records: updatedRecords })
+      .eq('id', selected.id)
+    setEmployees((prev) =>
+      prev.map((emp) =>
+        emp.id === selected.id ? { ...emp, salaryRecords: updatedRecords } : emp
+      )
+    )
+    setSelected((prev) => (prev ? { ...prev, salaryRecords: updatedRecords } : null))
+    setLeaveDate('')
+    setLeaveReason('')
+    setShowLeaveModal(false)
   }
 
   const markPaid = async (month: string) => {
@@ -280,15 +326,18 @@ const EmployeeManagement: React.FC = () => {
         </tbody>
       </table>
       {selected && (
-        <div className="employee-details">
-          <h3>Details for {selected.name}</h3>
+        <div className="modal-overlay" onClick={() => setSelected(null)}>
+          <div className="employee-details" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelected(null)}>✕</button>
+            <h3>Details for {selected.name} <span style={{ color: '#888', fontSize: '0.85em' }}>({selected.role})</span></h3>
           <table className="salary-records">
             <thead>
               <tr>
                 <th>Month</th>
                 <th>Advances</th>
+                <th>Leaves</th>
                 <th>Paid</th>
-                <th>Pending</th>
+                <th>Pending Salary</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -296,62 +345,118 @@ const EmployeeManagement: React.FC = () => {
               {selected.salaryRecords
               .slice()
               .sort((a, b) => a.month.localeCompare(b.month))
-              .map((rec, idx) => (
-                <tr key={idx}>
-                  <td>{rec.month}</td>
-                  <td>
-                    {rec.advances.reduce((a, e) => a + e.amount, 0)}
-                    <ul>
-                      {rec.advances.map((e, i) => (
-                        <li key={i}>
-                          {e.date}: {e.amount}
-                        </li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td>{rec.paid ? 'Yes' : 'No'}</td>
-                  <td>{selected.salary - rec.advances.reduce((a, e) => a + e.amount, 0)}</td>
-                  <td>
-                    {!rec.paid && (
-                      <button onClick={() => markPaid(rec.month)}>Mark Paid</button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              .map((rec, idx) => {
+                const totalAdvances = rec.advances.reduce((a, e) => a + e.amount, 0)
+                const leaves = rec.leaves || []
+                const unpaidLeaveDays = leaves.filter((l) => l.type === 'unpaid').length
+                const dailyRate = selected.salary / 30
+                const leaveDeduction = Math.round(unpaidLeaveDays * dailyRate)
+                const pending = selected.salary - totalAdvances - leaveDeduction
+                return (
+                  <tr key={idx}>
+                    <td>{rec.month}</td>
+                    <td>
+                      {totalAdvances > 0 ? `₹${totalAdvances}` : '—'}
+                      {rec.advances.length > 0 && (
+                        <ul style={{ margin: '4px 0', paddingLeft: 16 }}>
+                          {rec.advances.map((e, i) => (
+                            <li key={i}>{e.date}: ₹{e.amount}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </td>
+                    <td>
+                      {leaves.length === 0 ? '—' : `${leaves.length} day(s)`}
+                      {leaves.length > 0 && (
+                        <ul style={{ margin: '4px 0', paddingLeft: 16 }}>
+                          {leaves.map((l, i) => (
+                            <li key={i} style={{ color: l.type === 'unpaid' ? '#c0392b' : '#27ae60' }}>
+                              {l.date} — {l.type}{l.reason ? ` (${l.reason})` : ''}
+                              {l.type === 'unpaid' && ` −₹${Math.round(dailyRate)}`}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </td>
+                    <td>{rec.paid ? 'Yes' : 'No'}</td>
+                    <td>
+                      ₹{pending}
+                      {leaveDeduction > 0 && (
+                        <div style={{ fontSize: '0.8em', color: '#c0392b' }}>Leave deduction: ₹{leaveDeduction}</div>
+                      )}
+                    </td>
+                    <td>
+                      {!rec.paid && (
+                        <button onClick={() => markPaid(rec.month)}>Mark Paid</button>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
-          <form onSubmit={handleAddAdvance} className="advance-form">
-            <h4>Add Advance</h4>
-            <div>
-              <label>Month:</label>
-              <input
-                type="month"
-                value={advanceMonth}
-                onChange={(e) => setAdvanceMonth(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label>Date:</label>
-              <input
-                type="date"
-                value={advanceDate}
-                onChange={(e) => setAdvanceDate(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label>Amount:</label>
-              <input
-                type="number"
-                value={advanceAmount}
-                onChange={(e) => setAdvanceAmount(Number(e.target.value))}
-                required
-              />
-            </div>
-            <button type="submit">Add Advance</button>
-          </form>
-          <button onClick={() => setSelected(null)}>Close Details</button>
+          <div className="sub-modal-actions">
+            <button className="sub-modal-trigger" onClick={() => setShowAdvanceModal(true)}>+ Add Advance</button>
+            <button className="sub-modal-trigger leave" onClick={() => setShowLeaveModal(true)}>+ Add Leave</button>
+          </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Advance Modal */}
+      {showAdvanceModal && selected && (
+        <div className="modal-overlay" onClick={() => setShowAdvanceModal(false)}>
+          <div className="sub-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowAdvanceModal(false)}>✕</button>
+            <h3>Add Advance — {selected.name}</h3>
+            <form onSubmit={handleAddAdvance} className="advance-form">
+              <div>
+                <label>Month:</label>
+                <input type="month" value={advanceMonth} onChange={(e) => setAdvanceMonth(e.target.value)} required />
+              </div>
+              <div>
+                <label>Date:</label>
+                <input type="date" value={advanceDate} onChange={(e) => setAdvanceDate(e.target.value)} required />
+              </div>
+              <div>
+                <label>Amount (₹):</label>
+                <input type="number" value={advanceAmount} onChange={(e) => setAdvanceAmount(Number(e.target.value))} required />
+              </div>
+              <button type="submit">Save Advance</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Leave Modal */}
+      {showLeaveModal && selected && (
+        <div className="modal-overlay" onClick={() => setShowLeaveModal(false)}>
+          <div className="sub-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowLeaveModal(false)}>✕</button>
+            <h3>Add Leave — {selected.name}</h3>
+            <form onSubmit={handleAddLeave} className="advance-form">
+              <div>
+                <label>Month:</label>
+                <input type="month" value={leaveMonth} onChange={(e) => setLeaveMonth(e.target.value)} required />
+              </div>
+              <div>
+                <label>Date:</label>
+                <input type="date" value={leaveDate} onChange={(e) => setLeaveDate(e.target.value)} required />
+              </div>
+              <div>
+                <label>Type:</label>
+                <select value={leaveType} onChange={(e) => setLeaveType(e.target.value as 'paid' | 'unpaid')}>
+                  <option value="unpaid">Unpaid (salary deducted)</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </div>
+              <div>
+                <label>Reason:</label>
+                <input type="text" value={leaveReason} onChange={(e) => setLeaveReason(e.target.value)} placeholder="Optional" />
+              </div>
+              <button type="submit">Save Leave</button>
+            </form>
+          </div>
         </div>
       )}
     </div>

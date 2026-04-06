@@ -68,3 +68,29 @@ CREATE TABLE incomes (
   notes TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 6. Create customers table (for daily orders)
+CREATE TABLE customers (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  breakfast_rate NUMERIC NOT NULL DEFAULT 0,
+  lunch_rate NUMERIC NOT NULL DEFAULT 0,
+  dinner_rate NUMERIC NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 7. Create daily_orders table
+CREATE TABLE daily_orders (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  date DATE NOT NULL,
+  customer_id UUID NOT NULL REFERENCES customers(id) ON DELETE RESTRICT,
+  breakfast_count INTEGER NOT NULL DEFAULT 0,
+  lunch_count INTEGER NOT NULL DEFAULT 0,
+  dinner_count INTEGER NOT NULL DEFAULT 0,
+  total_value NUMERIC NOT NULL DEFAULT 0,
+  payment_status TEXT NOT NULL DEFAULT 'Pending' CHECK (payment_status IN ('Paid', 'Pending')),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_daily_orders_date ON daily_orders(date);
+CREATE INDEX idx_daily_orders_customer ON daily_orders(customer_id);

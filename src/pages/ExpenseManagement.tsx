@@ -26,6 +26,7 @@ const categories = [
   'Idiyappam',
   'Chappathi',
   'Egg',
+  'Salary'
 ]
 
 const ExpenseManagement: React.FC = () => {

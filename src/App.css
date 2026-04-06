@@ -104,6 +104,32 @@
   margin-bottom: 1.5rem;
 }
 
+.pending-summary {
+  background: linear-gradient(135deg, #fff8ef 0%, #fff3e0 100%);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 4px 14px rgba(255, 152, 0, 0.12);
+}
+
+.pending-summary h2 {
+  color: var(--primary-orange);
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.pending-amount {
+  margin: 0.5rem 0 0;
+  color: #c0392b;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.pending-meta {
+  margin: 0.3rem 0 0;
+  color: #666;
+}
+
 .sections {
   display: flex;
   gap: 2rem;
@@ -264,18 +290,107 @@
 }
 
 /* Employee Details */
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
 .employee-details {
+  position: relative;
   background: var(--white);
-  margin-top: 2rem;
-  border-top: 3px solid var(--primary-orange);
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+  border-top: 4px solid var(--primary-orange);
+  padding: 2rem;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(255, 152, 0, 0.25);
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .employee-details h3 {
   color: var(--primary-orange);
   margin-top: 0;
+  margin-right: 2rem;
+}
+
+.modal-close {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  background: transparent !important;
+  color: #888 !important;
+  border: none !important;
+  font-size: 1.4rem !important;
+  cursor: pointer !important;
+  line-height: 1 !important;
+  padding: 0.2rem 0.5rem !important;
+  border-radius: 50% !important;
+  transition: color 0.2s, background 0.2s !important;
+  margin: 0 !important;
+}
+
+.modal-close:hover {
+  color: #c0392b !important;
+  background: #fdecea !important;
+}
+
+/* Sub-modal action buttons inside employee details */
+.sub-modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.sub-modal-trigger {
+  background: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.sub-modal-trigger:hover {
+  background: #F57C00;
+  transform: translateY(-2px);
+}
+
+.sub-modal-trigger.leave {
+  background: #27ae60;
+}
+
+.sub-modal-trigger.leave:hover {
+  background: #1e8449;
+}
+
+/* Sub-modal container */
+.sub-modal {
+  position: relative;
+  background: var(--white);
+  border-top: 4px solid var(--primary-orange);
+  padding: 2rem;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 460px;
+}
+
+.sub-modal h3 {
+  color: var(--primary-orange);
+  margin-top: 0;
+  margin-right: 2rem;
+  font-size: 1.1rem;
 }
 
 .salary-records ul {
@@ -766,6 +881,19 @@ button:active {
 .expense-form button:hover {
   background-color: #F57C00;
   transform: translateY(-2px);
+}
+
+.readonly-total {
+  min-width: 180px;
+}
+
+.readonly-value {
+  padding: 0.75rem;
+  border: 2px solid var(--lighter-orange);
+  border-radius: 6px;
+  background: #fff8ef;
+  color: var(--primary-orange);
+  font-weight: 700;
 }
 
 .expense-table {

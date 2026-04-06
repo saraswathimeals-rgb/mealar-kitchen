@@ -7,6 +7,7 @@ import InventoryManagement from './pages/InventoryManagement'
 import ExpenseManagement from './pages/ExpenseManagement'
 import IncomeManagement from './pages/IncomeManagement'
 import ProfitAnalysis from './pages/ProfitAnalysis'
+import DailyOrders from './pages/DailyOrders'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -62,6 +63,7 @@ function App() {
         <Route path="/inventory" element={<InventoryManagement />} />
         <Route path="/expenses" element={<ExpenseManagement />} />
         <Route path="/income" element={<IncomeManagement />} />
+        <Route path="/orders" element={<DailyOrders />} />
         <Route path="/profit" element={<ProfitAnalysis />} />
       </Routes>
     </Router>
