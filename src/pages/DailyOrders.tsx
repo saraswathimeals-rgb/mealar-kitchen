@@ -429,6 +429,7 @@ const DailyOrders: React.FC = () => {
             <th>Dinner</th>
             <th>Total</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -440,12 +441,31 @@ const DailyOrders: React.FC = () => {
               <td>{o.lunch_count}</td>
               <td>{o.dinner_count}</td>
               <td>₹{o.total_value.toFixed(2)}</td>
-              <td>{o.payment_status || 'Pending'}</td>
+              <td>
+                <span
+                  style={{
+                    color: (o.payment_status || 'Pending') === 'Paid' ? '#1e8449' : '#c0392b',
+                    fontWeight: 600,
+                  }}
+                >
+                  {o.payment_status || 'Pending'}
+                </span>
+              </td>
+              <td>
+                <button onClick={() => handleTogglePaymentStatus(o)}>
+                  Mark {(o.payment_status || 'Pending') === 'Paid' ? 'Pending' : 'Paid'}
+                </button>
+                {(o.payment_status || 'Pending') === 'Pending' && (
+                  <button onClick={() => handleEditOrder(o)} style={{ marginLeft: '0.5rem' }}>
+                    Edit
+                  </button>
+                )}
+              </td>
             </tr>
           ))}
           {customerRangeOrders.length === 0 && (
             <tr>
-              <td colSpan={7} style={{ textAlign: 'center' }}>
+              <td colSpan={8} style={{ textAlign: 'center' }}>
                 No orders found for selected filters
               </td>
             </tr>

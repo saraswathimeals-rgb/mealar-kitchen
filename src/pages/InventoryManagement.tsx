@@ -396,134 +396,142 @@ const InventoryManagement: React.FC = () => {
       </table>
 
       {selected && (
-        <div className="inventory-details">
-          <h3>{selected.name} - Details</h3>
-          <div className="details-info">
-            <div>
-              <strong>Category:</strong> {selected.category}
-            </div>
-            <div>
-              <strong>Current Stock:</strong> {selected.quantity} {selected.unit}
-            </div>
-            <div>
-              <strong>Reorder Level:</strong> {selected.reorder_level} {selected.unit}
-            </div>
-            <div>
-              <strong>Total Value:</strong> ₹{(selected.quantity * selected.cost_per_unit).toFixed(2)}
-            </div>
-          </div>
-
-          <h4>Transaction History</h4>
-          {transactions.length === 0 ? (
-            <p>No transactions yet</p>
-          ) : (
-            <table className="transaction-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Type</th>
-                  <th>Quantity</th>
-                  <th>Cost</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.map((t) => (
-                  <tr key={t.id}>
-                    <td>{t.date}</td>
-                    <td>
-                      <span className={`type-badge ${t.type}`}>
-                        {t.type === 'purchase' ? '📦 Purchase' : '📤 Usage'}
-                      </span>
-                    </td>
-                    <td>{t.quantity}</td>
-                    <td>{t.cost > 0 ? t.cost.toFixed(2) : '-'}</td>
-                    <td>{t.notes || '-'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          <form onSubmit={handleAddTransaction} className="transaction-form">
-            <h4>Add Transaction</h4>
-            <div>
-              <label>Type:</label>
-              <select
-                value={transactionForm.type}
-                onChange={(e) =>
-                  setTransactionForm({
-                    ...transactionForm,
-                    type: e.target.value as 'purchase' | 'usage',
-                  })
-                }
-              >
-                <option value="purchase">📦 Purchase</option>
-                <option value="usage">📤 Usage</option>
-              </select>
-            </div>
-            <div>
-              <label>Quantity:</label>
-              <input
-                type="number"
-                value={transactionForm.quantity}
-                onChange={(e) =>
-                  setTransactionForm({
-                    ...transactionForm,
-                    quantity: Number(e.target.value),
-                  })
-                }
-                required
-              />
-            </div>
-            <div>
-              <label>Date:</label>
-              <input
-                type="date"
-                value={transactionForm.date}
-                onChange={(e) =>
-                  setTransactionForm({
-                    ...transactionForm,
-                    date: e.target.value,
-                  })
-                }
-                required
-              />
-            </div>
-            {transactionForm.type === 'purchase' && (
+        <div className="modal-overlay" onClick={() => setSelected(null)}>
+          <div
+            className="inventory-details inventory-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="modal-close" onClick={() => setSelected(null)}>
+              ×
+            </button>
+            <h3>{selected.name} - Details</h3>
+            <div className="details-info">
               <div>
-                <label>Cost:</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={transactionForm.cost}
+                <strong>Category:</strong> {selected.category}
+              </div>
+              <div>
+                <strong>Current Stock:</strong> {selected.quantity} {selected.unit}
+              </div>
+              <div>
+                <strong>Reorder Level:</strong> {selected.reorder_level} {selected.unit}
+              </div>
+              <div>
+                <strong>Total Value:</strong> ₹{(selected.quantity * selected.cost_per_unit).toFixed(2)}
+              </div>
+            </div>
+
+            <h4>Transaction History</h4>
+            {transactions.length === 0 ? (
+              <p>No transactions yet</p>
+            ) : (
+              <table className="transaction-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Cost</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions.map((t) => (
+                    <tr key={t.id}>
+                      <td>{t.date}</td>
+                      <td>
+                        <span className={`type-badge ${t.type}`}>
+                          {t.type === 'purchase' ? '📦 Purchase' : '📤 Usage'}
+                        </span>
+                      </td>
+                      <td>{t.quantity}</td>
+                      <td>{t.cost > 0 ? t.cost.toFixed(2) : '-'}</td>
+                      <td>{t.notes || '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            <form onSubmit={handleAddTransaction} className="transaction-form">
+              <h4>Add Transaction</h4>
+              <div>
+                <label>Type:</label>
+                <select
+                  value={transactionForm.type}
                   onChange={(e) =>
                     setTransactionForm({
                       ...transactionForm,
-                      cost: Number(e.target.value),
+                      type: e.target.value as 'purchase' | 'usage',
+                    })
+                  }
+                >
+                  <option value="purchase">📦 Purchase</option>
+                  <option value="usage">📤 Usage</option>
+                </select>
+              </div>
+              <div>
+                <label>Quantity:</label>
+                <input
+                  type="number"
+                  value={transactionForm.quantity}
+                  onChange={(e) =>
+                    setTransactionForm({
+                      ...transactionForm,
+                      quantity: Number(e.target.value),
                     })
                   }
                   required
                 />
               </div>
-            )}
-            <div>
-              <label>Notes:</label>
-              <input
-                type="text"
-                value={transactionForm.notes}
-                onChange={(e) =>
-                  setTransactionForm({
-                    ...transactionForm,
-                    notes: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <button type="submit">Add Transaction</button>
-          </form>
+              <div>
+                <label>Date:</label>
+                <input
+                  type="date"
+                  value={transactionForm.date}
+                  onChange={(e) =>
+                    setTransactionForm({
+                      ...transactionForm,
+                      date: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+              {transactionForm.type === 'purchase' && (
+                <div>
+                  <label>Cost:</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={transactionForm.cost}
+                    onChange={(e) =>
+                      setTransactionForm({
+                        ...transactionForm,
+                        cost: Number(e.target.value),
+                      })
+                    }
+                    required
+                  />
+                </div>
+              )}
+              <div>
+                <label>Notes:</label>
+                <input
+                  type="text"
+                  value={transactionForm.notes}
+                  onChange={(e) =>
+                    setTransactionForm({
+                      ...transactionForm,
+                      notes: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <button type="submit">Add Transaction</button>
+            </form>
 
-          <button onClick={() => setSelected(null)}>Close Details</button>
+            <button onClick={() => setSelected(null)}>Close Details</button>
+          </div>
         </div>
       )}
     </div>
